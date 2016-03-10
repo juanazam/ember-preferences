@@ -1,7 +1,9 @@
 {
   "name": "ember-preferences",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Easy way of managing user preference on the client side",
+  "homepage": "https://github.com/san650/ember-preferences",
+  "bugs": "https://github.com/san650/ember-preferences/issues",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,11 +13,11 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "https://github.com/san650/ember-preferences.git",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Santiago Ferreira",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
