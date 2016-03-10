@@ -8,7 +8,11 @@ Easy way of managing user preference on the client side with local storage (and 
 $ ember install ember-preferences
 ```
 
-## Example
+## Documentation
+
+See [DOCUMENTATION.md](./DOCUMENTATION.md).
+
+## Synopsis
 
 ```js
 import Ember from 'ember';
