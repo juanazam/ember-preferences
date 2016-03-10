@@ -1,6 +1,6 @@
 # Ember Preferences
 
-Easy way of managing user preference on the client side with local storage (and other providers in the future)
+Easy way of managing user preferences on the client side with local storage (and other providers in the future)
 
 ## Installation
 

@@ -1,7 +1,7 @@
 {
   "name": "ember-preferences",
   "version": "0.0.0",
-  "description": "Easy way of managing user preference on the client side",
+  "description": "Easy way of managing user preferences on the client side",
   "homepage": "https://github.com/san650/ember-preferences",
   "bugs": "https://github.com/san650/ember-preferences/issues",
   "directories": {
