@@ -1,5 +1,8 @@
 # Ember Preferences
 
+[![Build Status](https://travis-ci.org/san650/ember-preferences.svg?branch=master)](https://travis-ci.org/san650/ember-preferences)
+![Latest version](https://img.shields.io/npm/v/ember-preferences.svg)
+
 Easy way of managing user preferences on the client side with local storage (and other providers in the future)
 
 ## Installation
@@ -47,6 +50,11 @@ Every time `isVisible` is changed, the changes are stored in local storage. If y
 ### Building
 
 * `ember build`
+
+### Project's health
+
+[![Build Status](https://travis-ci.org/san650/ember-preferences.svg?branch=master)](https://travis-ci.org/san650/ember-preferences)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/6162adb06a07473cad60cffe3797270c)](https://www.codacy.com/app/san650/ember-preferences)
 
 ## License
 
