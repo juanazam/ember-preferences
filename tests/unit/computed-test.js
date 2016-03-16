@@ -87,3 +87,19 @@ test('updates value when the property changes', function(assert) {
 
   assert.equal(instance.get('foo'), 'baz');
 });
+
+test('setting null makes preference to return the default value', function(assert) {
+  let instance = createInstance({
+    cpOptions: {
+      defaultValue() {
+        return 'qux';
+      }
+    }
+  });
+
+  instance.set('foo', 'baz');
+  assert.equal(instance.get('foo'), 'baz');
+
+  instance.set('foo', null);
+  assert.equal(instance.get('foo'), 'qux');
+});
