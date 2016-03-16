@@ -11,7 +11,7 @@ function createInstance(options = {}) {
 
   let preferences = options.preferences || { foo: 'bar' };
 
-  let instance = Class.create({ preferences });
+  let instance = Class.create({ preferences, ping: 'pong' });
 
   return instance;
 }
@@ -86,4 +86,45 @@ test('updates value when the property changes', function(assert) {
   instance.set('foo', 'baz');
 
   assert.equal(instance.get('foo'), 'baz');
+});
+
+test('setting null makes preference to return the default value', function(assert) {
+  let instance = createInstance({
+    cpOptions: {
+      defaultValue: 'qux'
+    }
+  });
+
+  instance.set('foo', 'baz');
+  assert.equal(instance.get('foo'), 'baz');
+
+  instance.set('foo', null);
+  assert.equal(instance.get('foo'), 'qux');
+});
+
+test('default value function evaluates inside object context', function(assert) {
+  let instance = createInstance({
+    cpOptions: {
+      defaultValue() {
+        return this.get('ping');
+      }
+    },
+
+    preferences: { },
+  });
+
+  assert.equal(instance.get('foo'), 'pong');
+});
+
+test('setting null evaluates default value function inside object context', function(assert) {
+  let instance = createInstance({
+    cpOptions: {
+      defaultValue() {
+        return this.get('ping');
+      }
+    }
+  });
+
+  instance.set('foo', null);
+  assert.equal(instance.get('foo'), 'pong');
 });
