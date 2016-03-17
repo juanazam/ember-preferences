@@ -5,7 +5,6 @@
 /* global localStorage */
 import Ember from 'ember';
 
-
 /**
  * Ember service which reads and writes configurations directly to local
  * storage.
@@ -37,14 +36,23 @@ import Ember from 'ember';
  *   });
  */
 export default Ember.Service.extend({
+  _storage: null,
+
   unknownProperty(key) {
-    return localStorage.getItem(key);
+    return this.storage().getItem(key);
   },
 
   setUnknownProperty(key, value) {
-    localStorage.setItem(key, value);
+    this.storage().setItem(key, value);
     this.notifyPropertyChange(key);
 
     return value;
+  },
+
+  /**
+   * @private
+   */
+  storage() {
+    return this.get('_storage');
   }
 });

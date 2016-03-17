@@ -14,7 +14,8 @@ $ ember install ember-preferences
 ## Preferences as a service
 
 The addon provides an ember service which reads and writes configurations
-directly to local storage.
+directly to local storage. If local storage is not available then the
+configurations are kept in memory for the duration of the session.
 
 __In
 the future you will be able to choose the backend (local storage, session
