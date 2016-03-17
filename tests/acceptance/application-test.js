@@ -8,16 +8,22 @@ moduleForAcceptance('Acceptance | application', {
   }
 });
 
-test('visiting /', function(assert) {
+test('reads and writes to local storage, even complex values', function(assert) {
   visit('/');
 
   andThen(function() {
     assert.equal(find('h1').text(), 'Hello World!');
   });
 
-  click('button');
+  click('.simple-value');
 
   andThen(function() {
-    assert.equal(localStorage.getItem('title'), 'Hey Hey! Bye bye');
+    assert.equal(localStorage.getItem('title'), '"Hey Hey! Bye bye"');
+  });
+
+  click('.complex-value');
+
+  andThen(function() {
+    assert.equal(find('h2').text(), 'Complex value!');
   });
 });

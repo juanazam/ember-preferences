@@ -1,11 +1,11 @@
 import { module, test } from 'qunit';
-import MemoryStore from 'ember-preferences/storage/memory';
+import MemoryStorage from 'ember-preferences/storage/memory';
 
 var subject;
 
 module('Unit | Storage | memory storage', {
   beforeEach() {
-    subject = MemoryStore.create();
+    subject = MemoryStorage.create();
   }
 });
 

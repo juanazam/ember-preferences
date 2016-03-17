@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import SerializableStorage from 'ember-preferences/storage/serializable';
 import { initialize } from 'dummy/instance-initializers/ember-preferences';
 import { module, test } from 'qunit';
 import sinon from 'sinon';
@@ -37,5 +38,6 @@ test('registers localStorage as the storage', function(assert) {
   var service = application.resolveRegistration('service:preferences');
 
   assert.ok(service);
-  assert.equal(service.get('_storage'), window.localStorage);
+  assert.equal(service.get('_storage').constructor, SerializableStorage);
+  assert.equal(service.get('_storage.content'), window.localStorage);
 });

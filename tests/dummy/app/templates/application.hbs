@@ -1,3 +1,6 @@
 <h1>{{title}}</h1>
-<button {{action 'updateTitle'}}>Update title</button>
+<button class="simple-value" {{action 'simpleValue'}}>Update simple value</button>
+
+<h2>{{title.complex}}</h2>
+<button class="complex-value" {{action 'complexValue'}}>Update complex value</button>
 {{outlet}}
