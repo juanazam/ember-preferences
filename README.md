@@ -1,7 +1,7 @@
 # Ember Preferences
-
 [![Build Status](https://travis-ci.org/san650/ember-preferences.svg?branch=master)](https://travis-ci.org/san650/ember-preferences)
 ![Latest version](https://img.shields.io/npm/v/ember-preferences.svg)
+![Ember versions](https://embadge.io/v1/badge.svg?start=2.1.0)
 
 Easy way of managing user preferences on the client side with local storage (and other providers in the future)
 
