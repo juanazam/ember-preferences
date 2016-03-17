@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { initialize } from 'dummy/initializers/ember-preferences';
+import { initialize } from 'dummy/instance-initializers/ember-preferences';
 import { module, test } from 'qunit';
 import sinon from 'sinon';
 
