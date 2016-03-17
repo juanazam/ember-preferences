@@ -5,8 +5,11 @@ export default Ember.Controller.extend({
   title: preference('title', { defaultValue: 'Hello World!' }),
 
   actions: {
-    updateTitle() {
+    simpleValue() {
       this.set('title', 'Hey Hey! Bye bye');
+    },
+    complexValue() {
+      this.set('title', { complex: 'Complex value!' });
     }
   }
 });
