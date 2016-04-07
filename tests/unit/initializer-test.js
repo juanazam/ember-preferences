@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import SerializableStorage from 'ember-preferences/storage/serializable';
-import { initialize } from 'dummy/instance-initializers/ember-preferences';
+import NamespeceableStorage from 'ember-preferences/storage/namespaceable';
+import preferences from 'dummy/preferences';
+import { initializer } from 'ember-preferences/initializer';
 import { module, test } from 'qunit';
 import sinon from 'sinon';
 
@@ -21,23 +23,24 @@ test('injects the service everywhere', function(assert) {
   mock.expects('inject').withArgs('controller', 'preferences', 'service:preferences');
   mock.expects('inject').withArgs('component', 'preferences', 'service:preferences');
 
-  initialize(application);
+  initializer(application, preferences);
 
   assert.ok(mock.verify());
 });
 
 test('service is singleton and does not instantiates', function(assert) {
-  initialize(application);
+  initializer(application, preferences);
 
   assert.deepEqual(application.registeredOptions('service:preferences'), { singleton: true, instantiate: false });
 });
 
 test('registers localStorage as the storage', function(assert) {
-  initialize(application);
+  initializer(application, preferences);
 
   var service = application.resolveRegistration('service:preferences');
 
   assert.ok(service);
-  assert.equal(service.get('_storage').constructor, SerializableStorage);
-  assert.equal(service.get('_storage.content'), window.localStorage);
+  assert.equal(service.get('_storage').constructor, NamespeceableStorage);
+  assert.equal(service.get('_storage.content').constructor, SerializableStorage);
+  assert.equal(service.get('_storage.content.content'), window.localStorage);
 });

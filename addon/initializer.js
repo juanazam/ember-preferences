@@ -1,6 +1,7 @@
 import Service from 'ember-preferences/service';
 import MemoryStorage from 'ember-preferences/storage/memory';
 import SerializableStorage from 'ember-preferences/storage/serializable';
+import NamespaceableStorage from 'ember-preferences/storage/namespaceable';
 
 // FIXME: How can I test this? `window.localStorage = ...` is disabled in most browsers
 // See: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
@@ -18,13 +19,18 @@ function isLocalStorageAvailable() {
   return isAvailable;
 }
 
-function localStorage() {
-  return SerializableStorage.create({ content: window.localStorage });
+function localStorage(namespace) {
+  return NamespaceableStorage.create({
+    namespace,
+    content: SerializableStorage.create({
+      content: window.localStorage
+    })
+  });
 }
 
-export function initialize(application) {
+export function initializer(application, preferences) {
   // Configure the service
-  var storage = isLocalStorageAvailable() ? localStorage() : MemoryStorage.create();
+  var storage = isLocalStorageAvailable() ? localStorage(preferences.namespace) : MemoryStorage.create();
 
   application.register(
     'service:preferences',
@@ -37,8 +43,3 @@ export function initialize(application) {
     application.inject(type, 'preferences', 'service:preferences');
   });
 }
-
-export default {
-  name: 'ember-preferences',
-  initialize
-};

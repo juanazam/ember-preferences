@@ -1,8 +1,6 @@
 import Ember from 'ember';
 import DecoratorMixin from 'ember-preferences/storage/decorator';
 
-var { camelize } = Ember.String;
-
 export default Ember.Object.extend(DecoratorMixin, {
   namespace: null,
 
@@ -26,7 +24,7 @@ export default Ember.Object.extend(DecoratorMixin, {
     var fqk;
 
     if (typeof namespace !== 'undefined' && namespace !== null) {
-      fqk = camelize(`${this.get('namespace')} ${key}`);
+      fqk = `${this.get('namespace')}:${key}`;
     } else {
       fqk = key;
     }

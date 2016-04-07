@@ -15,7 +15,7 @@ module('Unit | Storage | namespaceable decorator', {
 test('.setItem() appends namespace to key', function(assert) {
   subject.setItem('foo', 'bar');
 
-  assert.equal(actualStorage.getItem('abcFoo'), 'bar');
+  assert.equal(actualStorage.getItem('abc:foo'), 'bar');
 });
 
 test('.setItem() ignores undefined namespace', function(assert) {
@@ -33,7 +33,7 @@ test('.setItem() ignores null namespace', function(assert) {
 });
 
 test('.getItem() removes namespace when reading a configuration', function(assert) {
-  actualStorage.setItem('abcBar', 'baz');
+  actualStorage.setItem('abc:bar', 'baz');
 
   assert.equal(subject.getItem('bar'), 'baz');
 });
