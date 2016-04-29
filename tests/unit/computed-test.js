@@ -9,7 +9,7 @@ function createInstance(options = {}) {
     foo: computed('foo', options.cpOptions)
   });
 
-  let preferences = options.preferences || { foo: 'bar' };
+  let preferences = options.preferences || { foo: { value: 'bar' } };
 
   let instance = Class.create({ preferences, ping: 'pong' });
 
@@ -27,7 +27,7 @@ test('updates value when the preference changes', function(assert) {
 
   assert.equal(instance.get('foo'), 'bar');
 
-  instance.set('preferences.foo', 'baz');
+  instance.set('preferences.foo', { value: 'baz' });
 
   assert.equal(instance.get('foo'), 'baz');
 });
@@ -75,7 +75,7 @@ test('writes configuration to preference object', function(assert) {
 
   instance.set('foo', 'baz');
 
-  assert.equal(instance.get('preferences.foo'), 'baz');
+  assert.equal(instance.get('preferences.foo').value, 'baz');
 });
 
 test('updates value when the property changes', function(assert) {
@@ -127,4 +127,55 @@ test('setting null evaluates default value function inside object context', func
 
   instance.set('foo', null);
   assert.equal(instance.get('foo'), 'pong');
+});
+
+test('returns null when expires option is present and record is not fresh', function(assert) {
+  let instance = createInstance({
+    cpOptions: {
+      expires() {
+        return new Date() + (60 * 60 + 24);
+      }
+    },
+    preferences: { foo: 'outdated', expiresAt: new Date() - (60 * 60 + 25) }
+  });
+
+  assert.equal(instance.get('foo'), null);
+});
+
+test('returns default value if present when expires option is present and record is not fresh', function(assert) {
+  let instance = createInstance({
+    cpOptions: {
+      defaultValue() {
+        return this.get('ping');
+      },
+
+      expires() {
+        return new Date() + (60 * 60 + 24);
+      }
+    },
+    preferences: { foo: 'outdated', expiresAt: new Date() - (60 * 60 + 25) }
+  });
+
+  assert.equal(instance.get('foo'), 'pong');
+});
+
+test('sets value of expiresAt based on expires function of provided', function(assert) {
+  let expiresAt = new Date() + (60 * 60 + 25),
+    instance = createInstance({
+    cpOptions: {
+      expires() {
+        return expiresAt;
+      }
+    }
+  });
+
+  instance.set('foo', 'value');
+  assert.equal(instance.get('preferences.foo').expiresAt, expiresAt);
+});
+
+test("doesn't value of expiresAt if expires function is not provided", function(assert) {
+  let instance = createInstance();
+
+  instance.set('foo', 'value');
+  assert.equal(instance.get('preferences.foo').expiresAt, null);
 });

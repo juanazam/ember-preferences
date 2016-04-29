@@ -10,20 +10,20 @@ module('Unit | Storage | memory storage', {
 });
 
 test('stores and retrieves a value', function(assert) {
-  subject.setItem('foo', 'bar');
+  subject.setItem('foo', { value: 'bar' });
 
-  assert.equal(subject.getItem('foo'), 'bar');
+  assert.equal(subject.getItem('foo').value, 'bar');
 });
 
 test('clears the store', function(assert) {
-  subject.setItem('foo', 'bar');
+  subject.setItem('foo', { value: 'bar' });
   subject.clear();
 
   assert.equal(subject.getItem('foo'), undefined);
 });
 
 test('removes item', function(assert) {
-  subject.setItem('foo', 'bar');
+  subject.setItem('foo', { value: 'bar' });
   subject.removeItem('foo');
 
   assert.equal(subject.getItem('foo'), undefined);

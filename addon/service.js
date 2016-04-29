@@ -39,14 +39,18 @@ export default Ember.Service.extend({
   _storage: null,
 
   unknownProperty(key) {
-    return this.storage().getItem(key);
+    let item = this.storage().getItem(key);
+
+    if (item !== null && typeof item !== 'undefined') {
+      return item;
+    }
   },
 
-  setUnknownProperty(key, value) {
-    this.storage().setItem(key, value);
+  setUnknownProperty(key, record) {
+    this.storage().setItem(key, record);
     this.notifyPropertyChange(key);
 
-    return value;
+    return record.value;
   },
 
   /**

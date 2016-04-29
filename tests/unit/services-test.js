@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
+import SerializableStorage from 'ember-preferences/storage/serializable';
 /* global localStorage */
 
 var { computed } = Ember;
@@ -11,21 +12,21 @@ moduleFor('service:preferences', 'Unit | Service | preferences', {
 });
 
 test('store preference in local storage', function(assert) {
-  let service = this.subject({ _storage: localStorage });
-  service.set('foo', 'bar');
+  let service = this.subject({ _storage: SerializableStorage.create({ content: localStorage }) });
+  service.set('foo', { value: 'bar' });
 
-  assert.equal(localStorage.getItem('foo'), 'bar');
+  assert.equal(JSON.parse(localStorage.getItem('foo')).value, 'bar');
 });
 
 test('fetch preference from local storage', function(assert) {
-  let service = this.subject({ _storage: localStorage });
-  localStorage.setItem('baz', 'qux');
+  let service = this.subject({ _storage: SerializableStorage.create({ content: localStorage }) });
+  localStorage.setItem('baz', JSON.stringify({ value: 'qux', expiresAt: new Date() }));
 
-  assert.equal(service.get('baz'), 'qux');
+  assert.equal(service.get('baz').value, 'qux');
 });
 
 test('notifies when a property changes', function(assert) {
-  let service = this.subject({ _storage: localStorage });
+  let service = this.subject({ _storage: SerializableStorage.create({ content: localStorage }) });
   let object = Ember.Object.create({
     preferences: service,
     bar: computed.alias('preferences.foo')
@@ -33,7 +34,7 @@ test('notifies when a property changes', function(assert) {
 
   assert.equal(object.get('bar'), null);
 
-  service.set('foo', 'baz');
+  service.set('foo', { value: 'baz' });
 
-  assert.equal(object.get('bar'), 'baz');
+  assert.equal(object.get('bar').value, 'baz');
 });

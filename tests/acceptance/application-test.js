@@ -18,7 +18,7 @@ test('reads and writes to local storage, even complex values', function(assert) 
   click('.simple-value');
 
   andThen(function() {
-    assert.equal(localStorage.getItem('title'), '"Hey Hey! Bye bye"');
+    assert.equal(JSON.parse(localStorage.getItem('title')).value, 'Hey Hey! Bye bye');
   });
 
   click('.complex-value');

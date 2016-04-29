@@ -7,8 +7,8 @@ export default Ember.Object.extend({
     return Ember.Object.create();
   }),
 
-  setItem(key, value) {
-    return this.get('db').set(key, value);
+  setItem(key, record) {
+    return this.get('db').set(key, record);
   },
 
   getItem(key) {

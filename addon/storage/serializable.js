@@ -3,8 +3,10 @@ import Ember from 'ember';
 export default Ember.Object.extend({
   content: null,
 
-  setItem(key, value) {
-    return this.get('content').setItem(key, JSON.stringify(value));
+  setItem(key, record) {
+    if (typeof record.value !== 'undefined' && record.value !== null) {
+      return this.get('content').setItem(key, JSON.stringify(record));
+    }
   },
 
   getItem(key) {

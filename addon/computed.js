@@ -4,8 +4,16 @@
 
 import Ember from 'ember';
 
-function calculateValue(target, value, options) {
-  if (typeof value === 'undefined' || value === null) {
+function isExpired(record, options) {
+  if (typeof record.expiresAt) {
+    return record.expiresAt < new Date();
+  } else {
+    return false;
+  }
+}
+
+function calculateValue(target, record, options) {
+  if (typeof record.value === 'undefined' || record.value === null || isExpired(record, options)) {
     if (typeof options.defaultValue === 'function') {
       return options.defaultValue.call(target);
     } else {
@@ -13,7 +21,7 @@ function calculateValue(target, value, options) {
     }
   }
 
-  return value;
+  return record.value;
 }
 
 /**
@@ -67,6 +75,7 @@ function calculateValue(target, value, options) {
  * @param {String} dependentKey - Key from preferences to subscribe to
  * @param {Object} options - Additional options
  * @param {Function|Any} options.defaultValue - Default value to return when the preference value is null or undefined
+ * @param {Function} options.expires - Function which determines when the record will expire
  * @return {Ember.ComputedProperty}
  */
 export default function preference(dependentKey, options = {}) {
@@ -74,15 +83,23 @@ export default function preference(dependentKey, options = {}) {
 
   return Ember.computed(key, {
     get() {
-      var value = this.get(key);
+      let record = this.get(key) || {};
 
-      return calculateValue(this, value, options);
+      if (record) {
+        return calculateValue(this, record, options);
+      }
     },
 
     set(_, value) {
-      this.set(key, value);
+      let record = { value };
 
-      return calculateValue(this, value, options);
+      if (options.expires !== null && typeof options.expires !== 'undefined') {
+        record.expiresAt = options.expires();
+      }
+
+      this.set(key, record);
+
+      return calculateValue(this, record, options);
     }
   });
 }
