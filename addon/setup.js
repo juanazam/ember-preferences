@@ -28,7 +28,7 @@ function localStorage(namespace) {
   });
 }
 
-export function initializer(application, preferences) {
+export function setup(application, preferences) {
   // Configure the service
   var storage = isLocalStorageAvailable() ? localStorage(preferences.namespace) : MemoryStorage.create();
 
