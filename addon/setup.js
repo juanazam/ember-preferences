@@ -20,17 +20,29 @@ function isLocalStorageAvailable() {
 }
 
 function localStorage(namespace) {
-  return NamespaceableStorage.create({
-    namespace,
-    content: SerializableStorage.create({
-      content: window.localStorage
-    })
+  var storage = SerializableStorage.create({
+    content: window.localStorage
   });
+
+  if (namespace) {
+    storage = NamespaceableStorage.create({
+      namespace,
+      content: storage
+    });
+  }
+
+  return storage;
 }
 
 export function setup(application, preferences) {
   // Configure the service
-  var storage = isLocalStorageAvailable() ? localStorage(preferences.namespace) : MemoryStorage.create();
+  var storage;
+
+  if (isLocalStorageAvailable()) {
+    storage = localStorage(preferences.namespace)
+  } else {
+    storage = MemoryStorage.create();
+  }
 
   application.register(
     'service:preferences',
