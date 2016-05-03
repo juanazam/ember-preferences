@@ -1,6 +1,27 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import Ombu from 'ember-ombu';
 /* global localStorage */
+
+var page = Ombu.create({
+  visit: '/',
+
+  simple: {
+    scope: '.simple-value',
+    text: 'h2',
+    btn: 'button'
+  },
+
+  complex: {
+    scope: '.complex-value',
+    text: 'h2',
+    btn: 'button'
+  }
+});
+
+function text(selector) {
+  return find(selector).text();
+}
 
 moduleForAcceptance('Acceptance | application', {
   beforeEach() {
@@ -13,22 +34,22 @@ moduleForAcceptance('Acceptance | application', {
 });
 
 test('reads and writes to local storage, even complex values', function(assert) {
-  visit('/');
+  visit(page);
 
   andThen(function() {
-    assert.equal(find('h1').text(), 'Hello World!');
+    assert.equal(text(page.simple.text), 'Hello World!');
   });
 
-  click('.simple-value');
+  click(page.simple.btn);
 
   andThen(function() {
     assert.equal(localStorage.getItem('dummy:title'), '"Hey Hey! Bye bye"');
   });
 
-  click('.complex-value');
+  click(page.complex.btn);
 
   andThen(function() {
-    assert.equal(find('h2').text(), 'Complex value!');
+    assert.equal(text(page.complex.text), 'Complex value!');
   });
 });
 
@@ -37,8 +58,8 @@ test('configures namespace', function(assert) {
     namespace: 'foo'
   };
 
-  visit('/');
-  click('.simple-value');
+  visit(page);
+  click(page.simple.btn);
 
   andThen(function() {
     assert.equal(localStorage.getItem('foo:title'), '"Hey Hey! Bye bye"');

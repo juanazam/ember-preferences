@@ -1,6 +1,11 @@
-<h1>{{title}}</h1>
-<button class="simple-value" {{action 'simpleValue'}}>Update simple value</button>
+<div class="simple-value">
+  <h2>{{title}}</h2>
+  <button {{action 'simpleValue'}}>Update simple value</button>
+</div>
 
-<h2>{{title.complex}}</h2>
-<button class="complex-value" {{action 'complexValue'}}>Update complex value</button>
+<div class="complex-value">
+  <h2>{{title.complex}}</h2>
+  <button {{action 'complexValue'}}>Update complex value</button>
+</div>
+
 {{outlet}}
