@@ -9,20 +9,20 @@ module('Unit | Storage | memory storage', {
   }
 });
 
-test('stores and retrieves a value', function(assert) {
+test('.setItem() and .getItem() store and retrieve values', function(assert) {
   subject.setItem('foo', 'bar');
 
   assert.equal(subject.getItem('foo'), 'bar');
 });
 
-test('clears the store', function(assert) {
+test('.clear() clears the store', function(assert) {
   subject.setItem('foo', 'bar');
   subject.clear();
 
   assert.equal(subject.getItem('foo'), undefined);
 });
 
-test('removes item', function(assert) {
+test('.removeItem() removes item', function(assert) {
   subject.setItem('foo', 'bar');
   subject.removeItem('foo');
 

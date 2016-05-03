@@ -1,27 +1,18 @@
 import Ember from 'ember';
+import DecoratorMixin from 'ember-preferences/storage/decorator';
 
-export default Ember.Object.extend({
-  content: null,
-
+export default Ember.Object.extend(DecoratorMixin, {
   setItem(key, value) {
-    return this.get('content').setItem(key, JSON.stringify(value));
+    return this._super(key, JSON.stringify(value));
   },
 
   getItem(key) {
-    var value = this.get('content').getItem(key);
+    var value = this._super(key);
 
     if (typeof value === 'undefined' || value === null) {
       return value;
     }
 
     return JSON.parse(value);
-  },
-
-  clear() {
-    this.get('content').clear();
-  },
-
-  removeItem(key) {
-    this.get('content').removeItem(key);
   }
 });
