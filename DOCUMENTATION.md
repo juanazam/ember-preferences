@@ -4,6 +4,7 @@
 - [Preferences as a service](#preferences-as-a-service)
 - [Preferences as a mixin](#preferences-as-a-mixin)
 - [Computed property](#computed-property)
+- [Customizations](#customizations)
 
 ## Installation
 
@@ -116,3 +117,40 @@ export default Ember.Component.extend({
 
 Other features are planned to be added in the future like expiration based on
 absolute time, preference name spacing and others.
+
+## Customizations
+
+Preferences are stored in local storage using the application name as the
+namespace for each key. You can change this behavior by placing a `preferences.js`
+file in the `app/` folder.
+
+First, add a new `app/preferences.js` file to your project with the following
+content.
+
+```js
+export default function() {
+  return {};
+}
+```
+
+To change the namespace you need to define the `namespace` property as follows
+
+```js
+export default function() {
+  return {
+    namespace: 'foo'
+  };
+}
+```
+
+Now every preference will be prefixed with `foo:` string.
+
+You can disable the use of namespace by returning a falsy value
+
+```js
+export default function() {
+  return {
+    namespace: false // disables namespace
+  };
+}
+```
