@@ -5,6 +5,10 @@ import destroyApp from '../helpers/destroy-app';
 export default function(name, options = {}) {
   module(name, {
     beforeEach() {
+      if (options.setConfiguration) {
+        options.setConfiguration.apply(this, arguments);
+      }
+
       this.application = startApp();
 
       if (options.beforeEach) {

@@ -53,11 +53,23 @@ test('reads and writes to local storage, even complex values', function(assert) 
   });
 });
 
-test('configures namespace', function(assert) {
-  window.preferenceFixture = {
-    namespace: 'foo'
-  };
+moduleForAcceptance('Acceptance | application', {
+  setConfiguration() {
+    window.preferenceFixture = {
+      namespace: 'foo'
+    };
+  },
 
+  beforeEach() {
+    localStorage.clear();
+  },
+
+  afterEach() {
+    delete window.preferenceFixture;
+  }
+});
+
+test('configures namespace', function(assert) {
   visit(page);
   click(page.simple.btn);
 

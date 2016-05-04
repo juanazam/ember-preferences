@@ -1,31 +1,32 @@
 import Ember from 'ember';
-import { moduleFor, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import Service from 'ember-preferences/service';
 /* global localStorage */
 
 var { computed } = Ember;
 
-moduleFor('service:preferences', 'Unit | Service | preferences', {
+module('Unit | Service | preferences', {
   beforeEach() {
     localStorage.clear();
   }
 });
 
 test('store preference in local storage', function(assert) {
-  let service = this.subject({ _storage: localStorage });
+  let service = Service.create({ _storage: localStorage });
   service.set('foo', 'bar');
 
   assert.equal(localStorage.getItem('foo'), 'bar');
 });
 
 test('fetch preference from local storage', function(assert) {
-  let service = this.subject({ _storage: localStorage });
+  let service = Service.create({ _storage: localStorage });
   localStorage.setItem('baz', 'qux');
 
   assert.equal(service.get('baz'), 'qux');
 });
 
 test('notifies when a property changes', function(assert) {
-  let service = this.subject({ _storage: localStorage });
+  let service = Service.create({ _storage: localStorage });
   let object = Ember.Object.create({
     preferences: service,
     bar: computed.alias('preferences.foo')
