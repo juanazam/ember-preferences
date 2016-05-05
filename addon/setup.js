@@ -34,7 +34,7 @@ function localStorage(namespace) {
   return storage;
 }
 
-export function setup(application, preferences) {
+export function register(container, preferences) {
   // Configure the service
   var storage;
 
@@ -44,14 +44,21 @@ export function setup(application, preferences) {
     storage = MemoryStorage.create();
   }
 
-  application.register(
+  container.register(
     'service:preferences',
     Service.create({ _storage: storage }),
-    { singleton: true, instantiate: false }
+    { instantiate: false }
   );
+}
 
+export function inject(registry) {
   // Inject the service everywhere
   ['route', 'controller', 'component'].forEach(type => {
-    application.inject(type, 'preferences', 'service:preferences');
+    // FIXME: We test the registry to know if we're using ember 1.12, 1.13 or +2.0
+    if (registry.inject) {
+      registry.inject(type, 'preferences', 'service:preferences');
+    } else {
+      registry.injection(type, 'preferences', 'service:preferences')
+    }
   });
 }

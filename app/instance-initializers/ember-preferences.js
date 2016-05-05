@@ -1,14 +1,20 @@
-import { setup } from 'ember-preferences/setup';
-import defaultPreferences from '../-ember-preferences-internal';
-import preferences from '../preferences';
+import { inject } from 'ember-preferences/setup';
 
-var merge = Ember.assign || Ember.merge;
+function initialize(application) {
+  var registry;
 
-export function initialize(application) {
-  var defaults = defaultPreferences(),
-      userPreferences = preferences();
+  // FIXME: We test the application to know if we're using ember 1.12, 1.13 or +2.0
+  if (application.inject) {
+    registry = application;
+  } else if (application.registry && application.registry.injection) {
+    registry = application.registry;
+  } else if (application.container && application.container.injection) {
+    registry = application.container;
+  } else {
+    registry = application;
+  }
 
-  setup(application, merge(defaults, userPreferences));
+  inject(registry);
 }
 
 export default {
