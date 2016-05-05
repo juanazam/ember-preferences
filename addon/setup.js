@@ -2,6 +2,7 @@ import Service from 'ember-preferences/service';
 import MemoryStorage from 'ember-preferences/storage/memory';
 import SerializableStorage from 'ember-preferences/storage/serializable';
 import NamespaceableStorage from 'ember-preferences/storage/namespaceable';
+import ExpirableStorage from 'ember-preferences/storage/expirable';
 
 // FIXME: How can I test this? `window.localStorage = ...` is disabled in most browsers
 // See: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
@@ -43,6 +44,10 @@ export function register(container, preferences) {
   } else {
     storage = MemoryStorage.create();
   }
+
+  storage = ExpirableStorage.create({
+    content: storage
+  });
 
   container.register(
     'service:preferences',

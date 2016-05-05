@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import SerializableStorage from 'ember-preferences/storage/serializable';
 import NamespaceableStorage from 'ember-preferences/storage/namespaceable';
+import ExpirableStorage from 'ember-preferences/storage/expirable';
 import { register, inject } from 'ember-preferences/setup';
 import { module, test } from 'qunit';
 import sinon from 'sinon';
@@ -49,9 +50,10 @@ if (isEmber2()) {
     var service = application.resolveRegistration('service:preferences');
 
     assert.ok(service);
-    assert.equal(service.get('_storage').constructor, NamespaceableStorage);
-    assert.equal(service.get('_storage.content').constructor, SerializableStorage);
-    assert.equal(service.get('_storage.content.content'), window.localStorage);
+    assert.equal(service.get('_storage').constructor, ExpirableStorage);
+    assert.equal(service.get('_storage.content').constructor, NamespaceableStorage);
+    assert.equal(service.get('_storage.content.content').constructor, SerializableStorage);
+    assert.equal(service.get('_storage.content.content.content'), window.localStorage);
   });
 
   test('.register does not use namespaceable storage when namespaces is false', function(assert) {
@@ -60,7 +62,8 @@ if (isEmber2()) {
     var service = application.resolveRegistration('service:preferences');
 
     assert.ok(service);
-    assert.equal(service.get('_storage').constructor, SerializableStorage);
-    assert.equal(service.get('_storage.content'), window.localStorage);
+    assert.equal(service.get('_storage').constructor, ExpirableStorage);
+    assert.equal(service.get('_storage.content').constructor, SerializableStorage);
+    assert.equal(service.get('_storage.content.content'), window.localStorage);
   });
 }
