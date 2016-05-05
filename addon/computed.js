@@ -3,6 +3,7 @@
  */
 
 import Ember from 'ember';
+import { expirable } from 'ember-preferences/storage/expirable';
 
 function calculateValue(target, value, options) {
   if (typeof value === 'undefined' || value === null) {
@@ -80,6 +81,10 @@ export default function preference(dependentKey, options = {}) {
     },
 
     set(_, value) {
+      if (typeof options.expires === 'function') {
+        value = expirable(options.expires(), value);
+      }
+
       this.set(key, value);
 
       return calculateValue(this, value, options);

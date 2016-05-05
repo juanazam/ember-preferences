@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import computed from 'ember-preferences/computed';
+import { isExpirable, isExpired } from 'ember-preferences/storage/expirable';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | computed');
@@ -127,4 +128,20 @@ test('setting null evaluates default value function inside object context', func
 
   instance.set('foo', null);
   assert.equal(instance.get('foo'), 'pong');
+});
+
+test('store expirable values (expired)', function(assert) {
+  let instance = createInstance({
+    cpOptions: {
+      expires() {
+        // 1 sec in the past
+        return +new Date() - 1000;
+      }
+    }
+  });
+
+  instance.set('foo', 'bar');
+
+  assert.ok(isExpirable(instance.get('foo')), 'Stores expirable objects');
+  assert.ok(isExpired(instance.get('foo')), 'Object is expired');
 });
