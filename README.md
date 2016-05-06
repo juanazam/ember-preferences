@@ -55,6 +55,7 @@ Every time `isVisible` is changed, the changes are stored in local storage. If y
 
 [![Build Status](https://travis-ci.org/san650/ember-preferences.svg?branch=master)](https://travis-ci.org/san650/ember-preferences)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/6162adb06a07473cad60cffe3797270c)](https://www.codacy.com/app/san650/ember-preferences)
+[![Ember Observer Score](https://emberobserver.com/badges/ember-preferences.svg)](https://emberobserver.com/addons/ember-preferences)
 
 ## License
 
