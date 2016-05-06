@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import MemoryStorage from 'ember-preferences/storage/memory';
-import NamespaceableStore from 'ember-preferences/storage/namespaceable';
+import NamespaceableStorage from 'ember-preferences/storage/namespaceable';
 
 var subject,
     actualStorage;
@@ -8,7 +8,7 @@ var subject,
 module('Unit | Storage | namespaceable decorator', {
   beforeEach() {
     actualStorage = MemoryStorage.create();
-    subject = NamespaceableStore.create({ content: actualStorage, namespace: 'abc' });
+    subject = NamespaceableStorage.create({ content: actualStorage, namespace: 'abc' });
   }
 });
 

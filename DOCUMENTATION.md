@@ -18,9 +18,7 @@ The addon provides an ember service which reads and writes configurations
 directly to local storage. If local storage is not available then the
 configurations are kept in memory for the duration of the session.
 
-__In
-the future you will be able to choose the backend (local storage, session
-storage, cookies, etc.).__
+__In the future you will be able to choose the backend (local storage, session storage, cookies, etc.).__
 
 The service is already registered in the application container so it's ready to be injected on any object.
 
@@ -40,7 +38,7 @@ You can also inject the service with a different property name
 ```js
 import Ember from 'ember';
 
-const { inject } = Ember;
+const { computed, inject } = Ember;
 
 export default Ember.Component.extend({
   userOptions: inject.service('preferences'),
@@ -59,6 +57,8 @@ consistency to the code.
 import Ember from 'ember';
 import PreferencesMixin from 'ember-preferences/mixin';
 
+const { computed } = Ember;
+
 export default Ember.Component.extend(PreferencesMixin, {
   foo: computed.alias('preferences.foo')
 });
@@ -74,7 +74,7 @@ __Without default value__
 import Ember from 'ember';
 import preference from 'ember-preferences/computed';
 
-const { computed, inject } = Ember;
+const { inject } = Ember;
 
 export default Ember.Component.extend({
   preferences: inject.service(),
@@ -90,7 +90,7 @@ __With default value__
 import Ember from 'ember';
 import preference from 'ember-preferences/computed';
 
-const { computed, inject } = Ember;
+const { inject } = Ember;
 
 export default Ember.Component.extend({
   preferences: inject.service(),
@@ -107,7 +107,7 @@ return mutable objects.
 import Ember from 'ember';
 import preference from 'ember-preferences/computed';
 
-const { computed, inject } = Ember;
+const { inject } = Ember;
 
 export default Ember.Component.extend({
   preferences: inject.service(),
@@ -115,8 +115,21 @@ export default Ember.Component.extend({
 });
 ```
 
-Other features are planned to be added in the future like expiration based on
-absolute time, preference name spacing and others.
+__With expiration date__
+
+```js
+import Ember from 'ember';
+import preference from 'ember-preference/computed';
+
+const ONE_DAY = 1 * 60 * 60 * 1000;
+
+export default Ember.Component.extend({
+  foo: preference('bar', { expires() { return +new Date() + ONE_DAY; } })
+});
+```
+
+When a value is written it will remain valid for one day. After that time the
+configuration will return it's default value or null.
 
 ## Customizations
 

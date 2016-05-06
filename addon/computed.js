@@ -3,6 +3,7 @@
  */
 
 import Ember from 'ember';
+import { expirable } from 'ember-preferences/storage/expirable';
 
 function calculateValue(target, value, options) {
   if (typeof value === 'undefined' || value === null) {
@@ -64,9 +65,21 @@ function calculateValue(target, value, options) {
  *     foo: preference('bar', { defaultValue() { return ['an', 'array']; } })
  *   });
  *
+ * @example <caption>With expiration date</caption>
+ *
+ *   import Ember from 'ember';
+ *   import preference from 'ember-preference/computed';
+ *
+ *   const ONE_DAY = 1 * 60 * 60 * 1000;
+ *
+ *   export default Ember.Component.extend({
+ *     foo: preference('bar', { expires() { return +new Date() + ONE_DAY; } })
+ *   });
+ *
  * @param {String} dependentKey - Key from preferences to subscribe to
  * @param {Object} options - Additional options
  * @param {Function|Any} options.defaultValue - Default value to return when the preference value is null or undefined
+ * @param {Function} options.expires - Function that returns the absolute expiration date - time in milliseconds since the UNIX epoch
  * @return {Ember.ComputedProperty}
  */
 export default function preference(dependentKey, options = {}) {
@@ -80,6 +93,10 @@ export default function preference(dependentKey, options = {}) {
     },
 
     set(_, value) {
+      if (typeof options.expires === 'function') {
+        value = expirable(options.expires(), value);
+      }
+
       this.set(key, value);
 
       return calculateValue(this, value, options);
